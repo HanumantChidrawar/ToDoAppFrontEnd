@@ -1,6 +1,6 @@
 # Links to my Project 
 
-   1) Project Url for Frontend application - "http://todoapp.hanumantpatil.co/"
+   1) Project Url for Frontend application - "http://todoapp.hanumantpatil.co./login"
 
    2) ReadMe Url- "http://readme.todoapp.hanumantpatil.co"
 
