@@ -1,0 +1,22 @@
+.text-right{
+    text-align: right;
+}
+
+.text-center{
+    text-align: center;
+}
+
+.login-div{
+    
+    -webkit-box-shadow: 0 0 12px white;
+        box-shadow: 0 0 12px white;
+        margin-top: 10%;
+       /*  margin-bottom: 10%; */
+        color: white;
+}
+
+.background{
+    background-image: url("../../../assets/signup.jpeg") ;
+    height: 100vh;
+    /* background-position: top center; */
+}

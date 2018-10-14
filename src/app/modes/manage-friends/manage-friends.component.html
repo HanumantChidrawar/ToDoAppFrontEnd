@@ -1,0 +1,119 @@
+<section class="container-fluid">
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" [routerLink]="['/select']">ToDo App</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/singleUser']">
+            <i class="fa fa-user fa-lg" aria-hidden="true"></i>Single User</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/multiUser']">
+            <i class="fa fa-users fa-lg" aria-hidden="true"></i>Multi User</a>
+        </li>
+      </ul>
+
+    </div>
+  </nav>
+
+
+  <div class="row">
+
+    <!-- Received Requests Card-->
+    <div class="card bg-dark col-12 col-md-6">
+      <div class="card-header">
+        Received Requests
+      </div>
+      <div class="card-body row" *ngFor="let request of userInfo.receivedFriendRequests">
+        <div class="col-8">
+          <user-details [userFirstName]="request.friendName" [userLastName]="''" [userStatus]="request.status"></user-details>
+        </div>
+        <div class="col-2">
+          <button class="btn" title="Accept Request" (click)="acceptRequest(request.friendId)">
+            <i class="fa fa-check"></i>
+          </button>
+        </div>
+        <div class="col-2">
+          <button class="btn" title="Reject Request" (click)="rejectRequest(request.friendId)">
+            <i class="fa fa-times"></i>
+          </button>
+        </div>
+      </div>
+      <div class="card-body" *ngIf="userInfo.receivedFriendRequests.length == 0">
+        <h3>No new Requests.</h3>
+      </div>
+    </div>
+    <!-- End Received Requests Card-->
+
+    <!-- Sent Requests Card-->
+    <div class="card border-dark col-12 col-md-6">
+      <div class="card-header alert alert-success">
+        Sent Requests
+      </div>
+      <div class="card-body row" *ngFor="let sent of userInfo.sentFriendRequests">
+        <div class="col-8">
+          <user-details [userFirstName]="sent.friendName" [userLastName]="''" [userStatus]="sent.status"></user-details>
+        </div>
+        <div class="col-4">
+          <button class="btn btn-danger" disabled>
+            Waiting
+          </button>
+        </div>
+      </div>
+      <div class="card-body" *ngIf="userInfo.sentFriendRequests.length == 0">
+        <h3>No Sent Requests are Pending.</h3>
+      </div>
+    </div>
+    <!-- End Sent Requests Card-->
+
+    <!-- Other users Card-->
+    <div class="card border-dark col-12 col-md-6">
+      <div class="card-header alert alert-success">
+        Other Users
+      </div>
+      <div class="card-body row" *ngFor="let user of allUsers">
+        <div class="col-8">
+          <user-details [userFirstName]="user.firstName" [userLastName]="user.lastName" [userStatus]="user.status"></user-details>
+        </div>
+        <div class="col-4">
+          <button class="btn btn-success" title="Send Request" (click)="sendRequest1(user.userId)">
+            <i class="fa fa-user-plus"></i>
+          </button>
+        </div>
+      </div>
+      <div class="card-body" *ngIf="allUsers.length == 0">
+        <h3>No Other Users.</h3>
+      </div>
+    </div>
+    <!-- end Other users card-->
+
+    <!-- Friends Card -->
+    <div class="card bg-dark col-12 col-md-6">
+      <div class="card-header ">
+        Friends
+      </div>
+      <div class="card-body row" *ngFor="let friend of friends">
+        <div class="col-8">
+          <user-details [userFirstName]="friend.friendName" [userLastName]="''" [userStatus]="friend.status"></user-details>
+        </div>
+        <div class="col-4">
+          <button class="btn btn-success" title="Unfriend" (click)="unFriend(friend.friendId)">
+            <i class="fa fa-times"></i>
+          </button>
+        </div>
+      </div>
+      <div class="card-body" *ngIf="userInfo.friends.length == 0">
+        <h3>Make Few Friends.</h3>
+      </div>
+    </div>
+    <!-- End Friends Card -->
+
+  </div>
+
+</section>

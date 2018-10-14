@@ -1,0 +1,14 @@
+.text-right{
+    text-align: right;
+    color:white;
+}
+
+.text-color{
+    color: white;
+}
+
+.background{
+    background-image: url("../../../assets/signup.jpeg") ;
+    height: 100%;
+    /* background-position: top center; */
+}

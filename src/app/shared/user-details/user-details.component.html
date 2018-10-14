@@ -1,0 +1,14 @@
+<!-- <div class="crop" [style.color]="userColor ? userColor: 'white'" [style.background]="userBg ? userBg:'blue'">
+  {{firstChar}}
+</div> -->
+
+<first-char [name]="userFirstName" [userBg]="'green'" [userColor]="'white'" (notify)="showGroupName($event)"></first-char>
+
+<div class="about">
+  <div class="name">{{userFirstName}}
+   
+  </div>
+  <div class="status" *ngIf="userStatus">
+    <i class="fa fa-circle" [ngClass]="userStatus"></i>{{userStatus}}
+  </div>
+</div>

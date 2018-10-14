@@ -1,0 +1,16 @@
+.card{
+    margin-top:5%;
+}
+.bg-dark{
+    color: white;
+}
+.fa-times{
+    color: red;
+  }
+
+.fa-user-plus{
+    color: green;
+}
+.fa-check{
+    color: green;
+}

@@ -1,0 +1,342 @@
+<div class="container-fluid">
+  <div class="row">
+
+    <div class="displayBlockMobile d-block d-sm-none" style="width:100%;z-index:1;">
+
+      <div class="col-sm-12 p-0">
+
+        <nav class="navbar navbar-expand-md  navbar-dark bg-dark">
+
+          <a class="navbar-brand text-white">
+            {{userInfo.firstName}} {{userInfo.lastName}}
+          </a>
+
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+
+            <span class="navbar-toggler-icon"></span>
+
+          </button>
+
+          <div class="collapse people-list navbar-collapse" id="navbarSupportedContent">
+            <button (click)="logout()" class="btn btn-info customButton">Logout</button>
+            <ul class="list">
+              <li class="p-2 typeOfChats" [routerLink]="['/singleUser']">
+                <i class="fa fa-user fa-lg"></i> Single User
+              </li>
+              <li class="p-2 typeOfChats" [routerLink]="['/manageFriends']">
+                <i class="fa fa-address-book fa-lg"></i> Manage Friends
+              </li>
+            </ul>
+
+          </div>
+
+        </nav>
+
+        <div class="accordion" id="accordionExample">
+          <div class="card border-dark">
+            <div class="card-header" id="headingOne">
+              <h5 class="mb-0">
+                <button class="btn btn-block btn-dark" type="button" data-toggle="collapse" data-target="#collapseOne"
+                  aria-expanded="true" aria-controls="collapseOne">
+                  Shared Todo's
+                </button>
+              </h5>
+            </div>
+
+            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+              <div class="card-body clearfix cursorPointer" *ngFor="let todo of userLists" (click)="selectedToDoList(todo)">
+                <div class="userPresence">
+                  <user-details [userFirstName]="todo.listName" [userLastName]="''" [userStatus]="'Active'"></user-details>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card bg-dark" *ngIf="friends.length > 0">
+            <div class="card-header" id="headingTwo">
+              <h5 class="mb-0">
+                <button class="btn btn-block btn-outline-dark collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo"
+                  aria-expanded="false" aria-controls="collapseTwo">
+                  Friends
+                </button>
+              </h5>
+            </div>
+            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+              <div class="card-body row clearfix cursorPointer" *ngFor="let friend of friends">
+                <div class="userPresence col-8">
+                  <user-details [userFirstName]="friend.friendName" [userLastName]="''" [userStatus]="friend.status"></user-details>
+                </div>
+                <div class="col-4 custom-row">
+                  <button class="btn" (click)="unFriend(user.userId)">
+                    <i class="fa fa-times"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card border-dark" *ngIf="allUsers.length > 0">
+            <div class="card-header" id="headingThree">
+              <h5 class="mb-0">
+                <button class="btn btn-block btn-dark collapsed" type="button" data-toggle="collapse" data-target="#collapseThree"
+                  aria-expanded="false" aria-controls="collapseThree">
+                  Other Users
+                </button>
+              </h5>
+            </div>
+            <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+              <div class="card-body row clearfix cursorPointer" *ngFor="let user of allUsers">
+                <div class="userPresence col-8">
+                  <user-details [userFirstName]="user.firstName" [userLastName]="user.lastName" [userStatus]="user.status"></user-details>
+                </div>
+                <div class="col-4">
+                  <button class="btn" (click)="sendRequest(user.userId)">
+                    <i class="fa fa-user-plus"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End Accordion-->
+
+      </div>
+
+    </div>
+
+    <div class="col-12 displayNoneMobile d-none d-sm-block p-0">
+      <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+        <div class="container-fluid">
+          <a class="navbar-brand" id="font-adjust" [routerLink]="['/select']">ToDo App</a>
+
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link text-light" [routerLink]="['/singleUser']">
+                <i class="fa fa-user fa-lg" aria-hidden="true"></i> Single User</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-light" [routerLink]="['/manageFriends']">
+                <i class="fa fa-address-book fa-lg"></i> Manage Friends</a>
+            </li>
+
+          </ul>
+
+        </div>
+      </nav>
+    </div>
+
+    <div class="col-12 displayNoneMobile d-none d-sm-block col-sm-4 col-md-4 people-list p-0" id="people-list">
+
+      <div class="p-3 text-white textCapitalize textCenter">
+        {{userInfo.firstName}} {{userInfo.lastName}}
+        <br>
+        <br>
+        <button (click)="logout()" class="btn btn-info customButton">Logout</button>
+      </div>
+
+      <ul class="list">
+        <li class="p-2 typeOfChats">
+          Shared ToDo's:
+        </li>
+        <li class="clearfix cursorPointer" *ngFor="let todo of userLists" (click)="selectedToDoList(todo)">
+          <div class="userPresence">
+            <user-details [userFirstName]="todo.listName" [userLastName]="''" [userStatus]="'Active'"></user-details>
+          </div>
+        </li>
+        <li class="p-2 typeOfChats" *ngIf="friends.length > 0">
+          Friends:
+        </li>
+        <li class="row clearfix cursorPointer" *ngFor="let friend of friends">
+          <div class="col-8 custom-row">
+            <user-details [userFirstName]="friend.friendName" [userLastName]="''" [userStatus]="friend.status"></user-details>
+          </div>
+          <div class="col-4 custom-row">
+            <button class="btn" (click)="unFriend(friend.friendId)">
+              <i class="fa fa-times"></i>
+            </button>
+          </div>
+        </li>
+        <li class="p-2 typeOfChats" *ngIf="allUsers.length > 0">
+          Other Users:
+        </li>
+        <li class="row clearfix cursorPointer" *ngFor="let user of allUsers">
+          <div class="col-8 custom-row">
+            <user-details [userFirstName]="user.firstName" [userLastName]="user.lastName" [userStatus]="user.status"></user-details>
+          </div>
+          <div class="col-4 custom-row">
+            <button class="btn" (click)="sendRequest(user.userId)">
+              <i class="fa fa-user-plus"></i>
+            </button>
+          </div>
+        </li>
+      </ul>
+
+    </div>
+
+    <div class="col-12 col-sm-8 col-md-8 chat ">
+      <div class="chat-header clearfix mobileMenu" *ngIf="selectedListName">
+        <first-char [name]="selectedListName" [userBg]="'green'" [userColor]="'white'" (notify)="showListName($event)"></first-char>
+
+        <div class="chat-about">
+          <div class="chat-with">Displaying {{selectedListName}}</div>
+        </div>
+        <button class="btn delete" (click)="deleteList()" style="float:right" title="List Deletion cannot be undone">
+          <i class="fa fa-trash"></i>
+        </button>
+      </div>
+      <!-- end chat-header -->
+
+      <button type="button" class="btn undoButton" *ngIf="selectedListId" (click)="getObjectFromHistory(selectedListId)">
+        <i class="fa fa-undo fa-lg" style="color: white"></i>
+      </button>
+      <!-- Button trigger modal -->
+      <button type="button" class="btn listButton" data-toggle="modal" title="Create ToDo List" data-target="#exampleModal">
+        <i class="fa fa-plus fa-lg" style="color: white"></i>
+      </button>
+
+      <!-- Modal -->
+      <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Create New Todo List</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <span>List Name: </span>
+
+              <label for="ListName" class="sr-only">List Name</label>
+
+              <input type="text" #list="ngModel" pattern="^[A-Z][A-za-z ]+$" minlength="2" id="ListName" name="listName"
+                class="form-control" [(ngModel)]="listName" placeholder="list Name" required autofocus>
+
+              <br>
+              <div [hidden]="list.pristine || list.valid" class="alert alert-danger">
+                <div *ngIf="list.errors?.pattern">
+                  ** list name should only start with Capital and contain only letters !
+                  <div *ngIf="list.errors?.minlength">
+                    ** list Name should contain minimum 2 letters!
+                  </div>
+                </div>
+                <div *ngIf="list.errors?.required">
+                  ** List Name is required!
+                </div>
+
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" (click)="createList()" data-dismiss="modal">Create list</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <textarea *ngIf="selectedListName" placeholder="Add Item" style="width:100%" (keydown)="createItemUsingEnter($event)"
+        [(ngModel)]="itemName"></textarea>
+      <div #scrollMe [scrollTop]="(scrollToChatTop)?0:scrollMe.scrollHeight" class="chat-history" *ngIf="selectedListName">
+
+        <ul>
+          <li class="textCenter">
+
+            <span class="cursorPointer" (click)="loadEarlierItems()">Load Previous items</span>
+
+            <br>
+
+            <span *ngIf="loadingPreviousitems == true">Loading...</span>
+
+          </li>
+          <span *ngFor="let item of items">
+            <li class="clearfix">
+              <div class="message-data" [ngClass]="{'align-right': item.createdBy == userName}">
+
+                <span class="message-data-time">{{item.createdOn | date: 'medium' }}</span> &nbsp; &nbsp;
+                <span class="message-data-name floatLeft" *ngIf="item.createdBy != userName">
+                  <i class="fa fa-circle online"></i> {{ item.createdBy }}</span>
+                <span class="message-data-name" *ngIf="item.createdBy == userName">{{ userName }}</span>
+                <i class="fa fa-circle me" *ngIf="item.createdBy == userName"></i>
+
+              </div>
+              <div class="message clearfix other-message" [ngClass]="{'done-item':item.itemStatus==true}">
+                {{item.itemName}}
+                <span class="set-text">
+                  <i [ngClass]="{'done-item':item.itemStatus==true,'cursorPointer':item.itemStatus==false}" class="fa fa-thumbs-o-up fa-lg"
+                    title="Completed" (click)="updateItem(item.itemId,false,false,!item.itemStatus)"></i>
+                  <i [ngClass]="{'done-item':item.itemStatus==true,'cursorPointer':item.itemStatus==false}" class="fa fa-edit fa-lg"
+                    title="Edit" (click)="updateitem=true;checkId=item.itemId;updateItemName=item.itemName"></i>
+                  <i [ngClass]="{'done-item':item.itemStatus==true,'cursorPointer':item.itemStatus==false}" class="fa fa-trash-o fa-lg"
+                    title="Delete" (click)="deleteItem(item.itemId,false)"></i>
+                  <i [ngClass]="{'done-item':item.itemStatus==true,'cursorPointer':item.itemStatus==false}" class="fa fa-plus fa-lg"
+                    title="Add subitem" (click)="createSubitem=true;checkId=item.itemId"></i>
+                </span>
+              </div>
+            </li>
+            <span style="float:left;width:100%" *ngIf="updateitem==true && item.itemId==checkId">
+              <textarea placeholder="update item" style="width: 100%" (keydown)="updateItemUsingEnter($event,item.itemId)"
+                [(ngModel)]="updateItemName" autofocus></textarea>
+            </span>
+            <span style="float:left;width:100%" *ngIf="createSubitem==true && item.itemId==checkId">
+              <textarea placeholder="Add SubItem" style="width: 100%" (keydown)="createSubItemUsingEnter($event,item.itemId)"
+                [(ngModel)]="subItemName" autofocus></textarea>
+            </span>
+
+            <span *ngIf="item.subItems">
+
+              <li *ngFor="let subItem of item.subItems">
+
+                <div class="message-subdata" [ngClass]="{'align-right': subItem.createdBy == userName}">
+
+                  <span class="message-data-time">{{subItem.createdOn | date: 'medium' }}</span> &nbsp; &nbsp;
+                  <span class="message-data-name floatLeft" *ngIf="subItem.createdBy != userName">
+                    <i class="fa fa-circle online"></i> {{ subItem.createdBy}}</span>
+                  <span class="message-data-name" *ngIf="subItem.createdBy == userName">{{ subItem.createdBy }}</span>
+                  <i class="fa fa-circle me" *ngIf="subItem.createdBy == userName"></i>
+                </div>
+
+                <span class="d-block set-subitem">
+
+                  <div class="sub-message  clearfix other-message-sub" [ngClass]="{'done-item':subItem.subItemStatus==true}">
+                    {{subItem.subItemName}}
+                    
+                    <span class="set-text">
+
+                      <i [ngClass]="{'done-item':subItem.subItemStatus==true,'cursorPointer':subItem.subItemStatus==false}"
+                        class="fa fa-thumbs-o-up fa-lg" title="Completed" (click)="updateSubItem(subItem.subItemId,false,false,!subItem.subItemStatus)"></i>&nbsp;
+                      <i [ngClass]="{'done-item':subItem.subItemStatus==true,'cursorPointer':subItem.subItemStatus==false}"
+                        class="fa fa-edit fa-lg" title="Edit" (click)="updateitem= true; updateSubItemName= subItem.subItemName; checkId= subItem.subItemId"></i>&nbsp;
+                      <i [ngClass]="{'done-item':subItem.subItemStatus==true,'cursorPointer':subItem.subItemStatus==false}"
+                        class="fa fa-trash-o fa-lg" title="Delete" (click)="deleteSubItem(subItem.subItemId,false)"></i>
+
+                    </span>
+
+                  </div>
+
+                </span>
+                <span style="float:left;width:100%" *ngIf="updateitem==true && subItem.subItemId==checkId">
+                  <textarea placeholder="update SubItem" style="width: 100%" (keydown)="updateSubItemUsingEnter($event,checkId)"
+                    [(ngModel)]="updateSubItemName" autofocus></textarea>
+                </span>
+
+              </li>
+
+            </span>
+
+          </span>
+
+
+        </ul>
+
+      </div>
+      <div *ngIf="!selectedListName" class="col-sm blankContent">
+        Click on ToDo to display Items.!!!
+      </div>
+      <!-- end chat-history -->
+
+    </div>
+
+  </div>
+  <!-- end chat -->
+
+</div>
+<!-- end container -->

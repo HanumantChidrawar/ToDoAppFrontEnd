@@ -1,0 +1,295 @@
+<textarea placeholder="WHAT NEEDS TO BE DONE ?" (keydown)="sendItemUsingKeypress($event)" [(ngModel)]="itemText"></textarea>
+        <span (click)="undoAction(selectedListId)"><i class="fa fa-undo fa-lg cursorPointer"></i></span>
+        <div #scrollMe [scrollTop]="scrollToChatTop" class="item-history">
+          <ul class="list-unstyled">
+            <span *ngFor="let item of items">
+              <li>
+
+                <div class="message-data" [ngClass]="{'align-right': item.createdBy == `${userInfo.firstName} ${userInfo.lastName}`}">
+                  
+                  <span class="message-data-time">{{item.modifiedOn | date: 'medium' }}</span> &nbsp; &nbsp;
+                  <span class="message-data-name floatLeft" *ngIf="item.createdBy != `${userInfo.firstName} ${userInfo.lastName}`">
+                    <i class="fa fa-circle online"></i> {{ item.createdBy}}</span>
+                  <span class="message-data-name" *ngIf="item.createdBy == `${userInfo.firstName} ${userInfo.lastName}`">{{ item.createdBy }}</span>
+                  <i class="fa fa-circle me" *ngIf="item.createdBy == `${userInfo.firstName} ${userInfo.lastName}`"></i>
+
+                </div>
+
+                <div class="message clearfix" [ngClass]="{'other-message': item.createdBy == `${userInfo.firstName} ${userInfo.lastName}`, 
+                  'my-message': item.createdBy != `${userInfo.firstName} ${userInfo.lastName}`,'done-item':item.itemStatus==true}">
+                  {{item?.itemName}}
+                  <span class="set-text">
+                    <i [ngClass]="{'done-item':item.itemStatus==true,'cursorPointer':item.itemStatus==false}" class="fa fa-thumbs-o-up fa-lg" title="Completed"
+                      (click)="updateItem(item)"></i>
+                    <i [ngClass]="{'done-item':item.itemStatus==true,'cursorPointer':item.itemStatus==false}" class="fa fa-edit fa-lg" title="Edit" (click)="editItem(item)"></i>
+                    <i [ngClass]="{'done-item':item.itemStatus==true,'cursorPointer':item.itemStatus==false}" class="fa fa-trash-o fa-lg" title="Delete" (click)="deleteItem(item)"></i>
+                    <i [ngClass]="{'done-item':item.itemStatus==true,'cursorPointer':item.itemStatus==false}" class="fa fa-plus fa-lg" title="Add subitem" (click)="addSubItem(item.itemId)"></i>
+                  </span>
+                </div>
+              </li>
+              
+              <span style="float:left;width:100%" *ngIf="subItemAddition==true && item.itemId==itemId">
+                <textarea placeholder="Add SubItem ?" (keydown)="sendItemUsingKeypress($event)" [(ngModel)]="subItemName"></textarea>
+              </span>
+              
+              <span *ngIf="item.subItems">
+              
+              <li *ngFor="let subItem of item.subItems">
+                
+                <div class="message-subdata" [ngClass]="{'align-right': subItem.createdBy == `${userInfo.firstName} ${userInfo.lastName}`}">
+                  
+                  <span class="message-data-time">{{subItem.createdOn | date: 'medium' }}</span> &nbsp; &nbsp;
+                  <span class="message-data-name floatLeft" *ngIf="subItem.createdBy != `${userInfo.firstName} ${userInfo.lastName}`">
+                    <i class="fa fa-circle online"></i> {{ subItem.createdBy}}</span>
+                  <span class="message-data-name" *ngIf="subItem.createdBy == `${userInfo.firstName} ${userInfo.lastName}`">{{ subItem.createdBy }}</span>
+                  <i class="fa fa-circle me" *ngIf="subItem.createdBy == `${userInfo.firstName} ${userInfo.lastName}`"></i>
+                </div>
+              
+                <span class="d-block set-subitem">
+
+                  <div class="sub-message  clearfix" [ngClass]="{'other-message-sub': subItem.createdBy == `${userInfo.firstName} ${userInfo.lastName}`, 
+                        'my-message-sub': subItem.createdBy != `${userInfo.firstName} ${userInfo.lastName}`,'done-item':subItem.subItemStatus==true}">
+                    {{subItem.subItemName}}
+
+                    <span class="set-text">
+
+                      <i [ngClass]="{'done-item':subItem.subItemStatus==true,'cursorPointer':subItem.subItemStatus==false}" class="fa fa-thumbs-o-up fa-lg" title="Completed"
+                        (click)="updateSubItem(subItem,item.itemId)"></i>&nbsp;
+                      <i [ngClass]="{'done-item':subItem.subItemStatus==true,'cursorPointer':subItem.subItemStatus==false}" 
+                      class="fa fa-edit fa-lg" title="Edit" (click)="editSubItem(subItem,item.itemId)"></i>&nbsp;
+                      <i [ngClass]="{'done-item':subItem.subItemStatus==true,'cursorPointer':subItem.subItemStatus==false}" class="fa fa-trash-o fa-lg" title="Delete" 
+                      (click)="deleteSubItem(subItem,item.itemId)"></i>
+
+                    </span>
+
+                  </div>
+
+                </span>
+
+              </li>
+
+              </span>
+
+            </span>
+            
+            <li class="text-center" *ngIf="selectedListId">
+
+              <span class="cursorPointer" (click)="loadEarlierPageOfItem()">Load Previous Items</span>
+
+              <br>
+
+              <span *ngIf="loadingPreviousItem == true">Loading...</span>
+
+            </li>
+          </ul>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <section class="container">
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">ToDo App</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown"
+      aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link btn " (click)="logout()">Logout</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="row">
+
+    <div class="col-md-4 d-sm-none d-md-block">
+
+      <div class="row">
+        <h2 class="col-12">Your ToDo's</h2>
+        <div class="col-12" *ngFor="let todo of userLists" (click)="selectedToDoList(todo.listId,todo.listName)">
+          <user-details [userFirstName]="todo.listName" [userLastName]="''" [userStatus]="'Active'" [messageRead]="false"></user-details>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="col-12 d-sm-block d-md-none">
+      <div class="accordion" id="accordionExample">
+        <div class="card">
+          <div class="card-header" id="headingOne">
+            <h5 class="mb-0">
+              <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne"
+                aria-expanded="true" aria-controls="collapseOne">
+                Todos
+              </button>
+            </h5>
+          </div>
+
+          <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-12" *ngFor="let todo of userListss" (click)="selectedToDoList(todo.listId,todo.listName)">
+                  <user-details [userFirstName]="todo.listName" [userLastName]="''" [userStatus]="'Active'"
+                    [messageRead]="false"></user-details>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="col-sm-12 col-md-8">
+      <div *ngIf="selectedListName">
+        <div class="row">
+          <div class="col-12">
+            <first-char [name]="selectedListName" [userBg]="'blue'" [userColor]="'white'" (notify)="showListName($event)"></first-char>
+            <p>{{selectedListName}}</p>
+          </div>
+          <div class="col-12">
+              <textarea placeholder="WHAT NEEDS TO BE DONE ?" (keydown)="createItemUsingEnter($event)" [(ngModel)]="itemName"></textarea>
+              <span (click)="getObjectFromHistory(selectedListId)"><i class="fa fa-undo fa-lg cursorPointer"></i></span>
+              <div #scrollMe [scrollTop]="scrollToChatTop" class="item-history">
+                <ul class="list-unstyled">
+                  <span *ngFor="let item of items">
+                    <li>
+      
+                      <div class="message-data" [ngClass]="{'align-right': item.createdBy == userInfo.firstName + userInfo.lastName}">
+                        
+                        <span class="message-data-time">{{item.createdOn | date: 'medium' }}</span> &nbsp; &nbsp;
+                        <span class="message-data-name floatLeft" *ngIf="item.createdBy != `${userInfo.firstName} ${userInfo.lastName}`">
+                          <i class="fa fa-circle online"></i> {{ item.createdBy}}</span>
+                        <span class="message-data-name" *ngIf="item.createdBy == `${userInfo.firstName} ${userInfo.lastName}`">{{ item.createdBy }}</span>
+                        <i class="fa fa-circle me" *ngIf="item.createdBy == `${userInfo.firstName} ${userInfo.lastName}`"></i>
+      
+                      </div>
+      
+                      <div class="message clearfix" [ngClass]="{'other-message': item.createdBy == `${userInfo.firstName} ${userInfo.lastName}`, 
+                        'my-message': item.createdBy != `${userInfo.firstName} ${userInfo.lastName}`,'done-item':item.itemStatus==true}">
+                        {{item?.itemName}}
+                        <span class="set-text">
+                          <i [ngClass]="{'done-item':item.itemStatus==true,'cursorPointer':item.itemStatus==false}" class="fa fa-thumbs-o-up fa-lg" title="Completed"
+                            (click)="updateItem(item.itemId,null,!item.itemStatus)"></i>
+                          <i [ngClass]="{'done-item':item.itemStatus==true,'cursorPointer':item.itemStatus==false}" class="fa fa-edit fa-lg" title="Edit" (click)="edititem=true"></i>
+                          <textarea [hidden]="edititem" placeholder="update item ?" (keydown)="updateItemUsingEnter($event,item.itemId)" [(ngModel)]="itemName"></textarea>
+                          <i [ngClass]="{'done-item':item.itemStatus==true,'cursorPointer':item.itemStatus==false}" class="fa fa-trash-o fa-lg" title="Delete" (click)="deleteItem(item.itemId)"></i>
+                          <i [ngClass]="{'done-item':item.itemStatus==true,'cursorPointer':item.itemStatus==false}" class="fa fa-plus fa-lg" title="Add subitem" (click)="createSubitem=true;checkId=item.itemId"></i>
+                        </span>
+                      </div>
+                    </li>
+                    
+                    <span style="float:left;width:100%" *ngIf="createSubitem==true && item.itemId==checkId">
+                      <textarea placeholder="Add SubItem ?" (keydown)="createSubItemUsingEnter($event,item.itemId)" [(ngModel)]="subItemName"></textarea>
+                    </span>
+                    
+                    <span *ngIf="item.subItems">
+                    
+                    <li *ngFor="let subItem of item.subItems">
+                      
+                      <div class="message-subdata" [ngClass]="{'align-right': subItem.createdBy == `${userInfo.firstName} ${userInfo.lastName}`}">
+                        
+                        <span class="message-data-time">{{subItem.createdOn | date: 'medium' }}</span> &nbsp; &nbsp;
+                        <span class="message-data-name floatLeft" *ngIf="subItem.createdBy != `${userInfo.firstName} ${userInfo.lastName}`">
+                          <i class="fa fa-circle online"></i> {{ subItem.createdBy}}</span>
+                        <span class="message-data-name" *ngIf="subItem.createdBy == `${userInfo.firstName} ${userInfo.lastName}`">{{ subItem.createdBy }}</span>
+                        <i class="fa fa-circle me" *ngIf="subItem.createdBy == `${userInfo.firstName} ${userInfo.lastName}`"></i>
+                      </div>
+                    
+                      <span class="d-block set-subitem">
+      
+                        <div class="sub-message  clearfix" [ngClass]="{'other-message-sub': subItem.createdBy == `${userInfo.firstName} ${userInfo.lastName}`, 
+                              'my-message-sub': subItem.createdBy != `${userInfo.firstName} ${userInfo.lastName}`,'done-item':subItem.subItemStatus==true}">
+                          {{subItem.subItemName}}
+      
+                          <span class="set-text">
+      
+                            <i [ngClass]="{'done-item':subItem.subItemStatus==true,'cursorPointer':subItem.subItemStatus==false}" class="fa fa-thumbs-o-up fa-lg" title="Completed"
+                              (click)="updateSubItem(subItem.subItemId,null,!subItem.subItemStatus)"></i>&nbsp;
+                            <i [ngClass]="{'done-item':subItem.subItemStatus==true,'cursorPointer':subItem.subItemStatus==false}" 
+                            class="fa fa-edit fa-lg" title="Edit" (click)="edititem=true"></i>&nbsp;
+                            <textarea [hidden]="edititem" placeholder="update subItem ?" (keydown)="updateSubItemUsingEnter($event,subItem.subItemId)" [(ngModel)]="subItemName"></textarea>
+                            <i [ngClass]="{'done-item':subItem.subItemStatus==true,'cursorPointer':subItem.subItemStatus==false}" class="fa fa-trash-o fa-lg" title="Delete" 
+                            (click)="deleteSubItem(subItem.subItemId)"></i>
+      
+                          </span>
+      
+                        </div>
+      
+                      </span>
+      
+                    </li>
+      
+                    </span>
+      
+                  </span>
+      
+                  <li class="text-center" *ngIf="selectedListId">
+      
+                    <span class="cursorPointer" (click)="loadEarlierPageOfItem()">Load Previous Items</span>
+      
+                    <br>
+      
+                    <span *ngIf="loadingPreviousItem == true">Loading...</span>
+      
+                  </li>
+                </ul>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</section>
