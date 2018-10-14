@@ -1,0 +1,19 @@
+Following are the deatils for RealTime ToDo App project-
+   
+   1) Project Url for Frontend application - "http://todoapp.hanumantpatil.co"
+
+   2) ReadMe Url- "http://readme.todoapp.hanumantpatil.co"
+
+   3) Project Url for Backend application - "http://api.todoapp.hanumantpatil.co"  
+
+   4) API Documentation Url- "http://apidoc.todoapp.hanumantpatil.co"
+
+   5) Events Documentation Url- "http://eventdoc.todoapp.hanumantpatil.co"
+
+and link to My Github repository is as follow-
+
+   1) Frontend application- https://github.com/HanumantChidrawar/ToDoAppFrontend.git
+   
+   2) Backend application- https://github.com/HanumantChidrawar/ToDoAppBackend.git
+   
+
