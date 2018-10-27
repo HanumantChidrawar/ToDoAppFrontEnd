@@ -8,7 +8,7 @@ Following are the hosted link for ToDoFrontEnd App-
 5) [ToDo App Readme.txt](http://readme.todoapp.hanumantpatil.co)
 
 
-# MeetingClient
+# ToDo App
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.0.0.
 
